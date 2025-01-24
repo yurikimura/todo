@@ -11,15 +11,15 @@
     {{ session('message') }}
   </div>
   @endif
-    @if ($errors->any())
-      <div class="todo__alert--danger">
-        <ul>
-          @foreach ($errors->all() as $error)
-          <li>{{ $error }}</li>
-          @endforeach
-        </ul>
-      </div>
-    @endif
+  @if ($errors->any())
+  <div class="todo__alert--danger">
+    <ul>
+      @foreach ($errors->all() as $error)
+      <li>{{ $error }}</li>
+      @endforeach
+    </ul>
+  </div>
+  @endif
 </div>
 
 <div class="todo__content">
@@ -33,11 +33,13 @@
         class="create-form__item-input"
         type="text"
         name="content"
-        value="{{ old('content') }}"
-        >
-     <select class="create-form__item-select">
-       <option value="">カテゴリ</option>
-     </select>
+        value="{{ old('content') }}">
+      <select class="create-form__item-select" name="category_id">
+        @foreach ($categories as $category)
+        <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
+        @endforeach
+        <option value="">カテゴリ</option>
+      </select>
     </div>
     <div class="create-form__button">
       <button class="create-form__button-submit" type="submit">作成</button>
@@ -45,7 +47,7 @@
   </form>
 
   <div class="section__title">
-     <h2>Todo検索</h2>
+    <h2>Todo検索</h2>
   </div>
   <form class="search-form">
     <div class="search-form__item">
@@ -59,12 +61,12 @@
     </div>
   </form>
   <div class="todo-table">
-   <table class="todo-table__inner">
-     <tr class="todo-table__row">
-      <th class="todo-table__header">
-        <span class="todo-table__header-span">Todo</span>
-        <span class="todo-table__header-span">カテゴリ</span>
-      </th>
+    <table class="todo-table__inner">
+      <tr class="todo-table__row">
+        <th class="todo-table__header">
+          <span class="todo-table__header-span">Todo</span>
+          <span class="todo-table__header-span">カテゴリ</span>
+        </th>
       </tr>
       @foreach ($todos as $todo)
       <tr class="todo-table__row">
@@ -76,9 +78,9 @@
               <input class="update-form__item-input" type="text" name="content" value="{{ $todo->content }}">
               <input type="hidden" name="id" value="{{ $todo->id }}">
             </div>
-          <div class="update-form__item">
-            <p class="update-form__item-p">Category 1</p>
-          </div>
+            <div class="update-form__item">
+              <p class="update-form__item-p">{{ $todo['category']['name'] }}</p>
+            </div>
             <div class="update-form__button">
               <button class="update-form__button-submit" type="submit">更新</button>
             </div>
